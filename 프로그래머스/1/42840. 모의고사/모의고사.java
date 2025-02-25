@@ -3,24 +3,36 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] answers) {
-        int[] student1 = {1, 2, 3, 4, 5};
-        int[] student2 = {2, 1, 2, 3, 2, 4, 2, 5};
-        int[] student3 = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
-        int score1 = 0, score2=0, score3=0;
+        int[][] patterns = {
+                {1, 2, 3, 4, 5},
+                {2, 1, 2, 3, 2, 4, 2, 5},
+                {3, 3, 1, 1, 2, 2, 4, 4, 5, 5}
+        };
+
+        int[] score = new int[3];
 
         for (int i = 0; i < answers.length; i++) {
-            if (answers[i] == student1[i%5]) score1++;
-            if (answers[i] == student2[i%8]) score2++;
-            if (answers[i] == student3[i%10]) score3++;
+            for (int j = 0; j < 3; j++) {
+                if (answers[i] == patterns[j][i % patterns[j].length]){
+                    score[j]++;
+                }
+            }
         }
 
-        int maxScore = Math.max(score1, Math.max(score2, score3));
-        ArrayList<Integer> winners = new ArrayList<>();
+        int maxScore = Math.max(score[0], Math.max(score[1], score[2]));
 
-        if (score1 == maxScore) winners.add(1);
-        if (score2 == maxScore) winners.add(2);
-        if (score3 == maxScore) winners.add(3);
+        int bestScoreStudent = 0;
+        for (int s : score){
+            if (s == maxScore) bestScoreStudent++;
+        }
 
-        return winners.stream().mapToInt(i -> i).toArray();
+        int[] answer = new int[bestScoreStudent];
+        int index = 0;
+        for (int i = 0; i < 3; i++){
+            if (score[i] == maxScore) {
+                answer[index++] = i+1;
+            }
+        }
+        return answer;
     }
 }
