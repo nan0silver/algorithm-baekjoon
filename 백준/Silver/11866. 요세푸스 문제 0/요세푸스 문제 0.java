@@ -1,8 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -14,26 +14,23 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         int N = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
-        Queue<Integer> queue = new LinkedList<>();
+        List<Integer> list = new ArrayList<>();
 
         for (int i = 1; i <= N; i++) {
-            queue.add(i);
+            list.add(i);
         }
 
-        while (!queue.isEmpty()) {
-            for (int i = 0; i < K-1; i++) {
-                int tmp = queue.remove();
-                queue.add(tmp);
-            }
-            sb.append(queue.remove());
-            if (!queue.isEmpty()) sb.append(", ");
+        int index = 0;
+
+        while (!list.isEmpty()) {
+            index = (index + K -1) % list.size();
+            sb.append(list.remove(index));
+
+            if (!list.isEmpty()) sb.append(", ");
         }
 
 
         sb.append(">");
         System.out.println(sb);
-    }
-    public static void solution(int[] answers) {
-
     }
 }
