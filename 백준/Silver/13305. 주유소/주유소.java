@@ -22,9 +22,9 @@ public class Main {
             oilPrice[index++] = Integer.parseInt(st.nextToken());
         }
 
-        int minOilPrice=oilPrice[0], totalCost=0;
+        long minOilPrice=oilPrice[0], totalCost=0;
         for (int i = 0; i < N-1; i++) {
-            totalCost += minOilPrice * roadLength[i];
+            totalCost += minOilPrice * (long) roadLength[i];
             if (oilPrice[i+1] < minOilPrice){
                 minOilPrice = oilPrice[i+1];
             }
