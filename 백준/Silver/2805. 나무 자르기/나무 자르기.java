@@ -5,57 +5,46 @@ import java.util.StringTokenizer;
 
 public class Main {
     static long[] nums;
-    static int N;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-        N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
+        String[] str = br.readLine().split(" ");
+        long N = Integer.parseInt(str[0]);
+        long M = Integer.parseInt(str[1]);
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        nums = new long[N];
-        st = new StringTokenizer(br.readLine(), " ");
-        int i = 0;
+        nums = new long[(int) N];
         long max = 0;
-        while(st.hasMoreTokens()) {
-            long tmp = Long.parseLong(st.nextToken());
-            nums[i++] = tmp;
-            if (tmp > max) max = tmp;
+        for (int i = 0; i < (int) N; i++) {
+            nums[i] = Integer.parseInt(st.nextToken());
+            max = (int) Math.max(max, nums[i]);
         }
-
-        System.out.println(binarySearch(M, max));
+        System.out.println(binarySearch(max, M));
 
     }
 
-    public static long binarySearch(int target, long max) {
-        long start = 0;
-        long end = max;
-
-        long tmp1 = 0;
-        long same = 0;
-
-        while (start <= end) {
-            long mid = (start + end) / 2;
-
-            if (calTree(mid) == target) {
-                tmp1 = mid;
-                start = mid+1;
+    public static long binarySearch(long max, long M){
+        long left = 1, right = max;
+        long answer = 0;
+        while (left <= right) {
+            long mid = (left + right )/2;
+            long tmp = calTree(mid);
+            if (tmp == M) {
+                answer = mid;
+                left = mid+1;
             }
-            else if (calTree(mid) > target) {
-                start = mid+1;
-            } else {
-                end = mid -1;
+            else if (tmp > M) left = mid+1;
+            else right = mid-1;
+        }
+        return Math.max(answer, right);
+    }
+
+    public static long calTree(long num){
+        long total = 0;
+        for (int k = 0; k < nums.length; k++) {
+            if (nums[k] >= num) {
+                total += (nums[k]-num);
             }
         }
-        return Math.max(tmp1, end);
+        return total;
     }
-
-    public static long calTree(long num) {
-        long result = 0;
-        for (int i = 0; i < N; i++) {
-            if (nums[i] > num) result = result + (nums[i]-num);
-        }
-
-        return result;
-    }
-
 }
