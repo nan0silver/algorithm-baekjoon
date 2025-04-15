@@ -1,89 +1,48 @@
-import java.lang.reflect.Array;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
-import java.io.*;
-import java.math.*;
 
 public class Main {
-    public static void main(String args[]) {
-        InputStream inputStream = System.in;
-        OutputStream outputStream = System.out;
-        InputReader in = new InputReader(inputStream);
-        PrintWriter out = new PrintWriter(outputStream);
+    static int[][] board;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int M = Integer.parseInt(br.readLine());
         StringBuilder sb = new StringBuilder();
-
-        int M = in.nextInt();
-        Boolean[] hgoup = new Boolean[21];
-        Arrays.fill(hgoup, false);
+        Set<Integer> set = new HashSet<>();
 
         for (int i = 0; i < M; i++) {
-            String str = in.next();
-
-            if (str.equals("add")) {
-                int n = in.nextInt();
-                //gg.add(n);
-                if (!hgoup[n]) {
-                    hgoup[n] = true;
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            String str = st.nextToken();
+            if (str.equals("all")){
+                for (int k = 1; k <= 20; k++) {
+                    set.add(k);
                 }
-            }
-            else if (str.equals("remove")) {
-                int n = in.nextInt();
-                //gg.remove(n);
-                if (hgoup[n]) {
-                    hgoup[n] = false;
-                }
-            }
-            else if (str.equals("check")) {
-                int n = in.nextInt();
-                //System.out.println(gg.check(n));
-                if (hgoup[n]) sb.append(1).append("\n");
-                else sb.append(0).append("\n");
-            }
-            else if (str.equals("toggle")) {
-                int n = in.nextInt();
-                //gg.toggle(n);
-                if (hgoup[n]) hgoup[n] = false;
-                else hgoup[n] = true;
-            }
-            else if (str.equals("all")) {
-                //gg.all();
-                for(int j = 1; j <= 20; j++) {
-                    hgoup[j] = true;
-                }
-            }
-            else if (str.equals("empty")) {
-                //gg.empty();
-                for(int j = 1; j <= 20; j++) {
-                    hgoup[j] = false;
+            }else if (str.equals("empty")){
+                set.clear();
+            }else {
+                int num = Integer.parseInt(st.nextToken());
+                if (str.equals("add")){
+                    set.add(num);
+                }else if (str.equals("remove")){
+                    if (set.contains(num)) set.remove(num);
+                }else if (str.equals("check")){
+                    if (set.contains(num)){
+                        sb.append("1\n");
+                    }else sb.append("0\n");
+                }else if (str.equals("toggle")){
+                    if (set.contains(num)){
+                        set.remove(num);
+                    }else {
+                        set.add(num);
+                    }
                 }
             }
         }
         System.out.println(sb);
+
     }
 
 }
 
 
-class InputReader {
-    public BufferedReader reader;
-    public StringTokenizer tokenizer;
-
-    public InputReader(InputStream stream) {
-        reader = new BufferedReader(new InputStreamReader(stream), 32768);
-        tokenizer = null;
-    }
-
-    public String next() {
-        while (tokenizer == null || !tokenizer.hasMoreTokens()) {
-            try {
-                tokenizer = new StringTokenizer(reader.readLine());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        return tokenizer.nextToken();
-    }
-    public int nextInt() {
-        return Integer.parseInt(next());
-    }
-
-}
