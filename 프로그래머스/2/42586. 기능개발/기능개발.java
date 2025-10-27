@@ -1,16 +1,27 @@
-import java.io.*;
 import java.util.*;
 
 class Solution {
-    public int[] solution(int[] progresses, int[] speeds) {
-        int[] dayOfEnd = new int[100];
-        int day = -1;
-        for (int i = 0; i < progresses.length; i++) {
-            while ((progresses[i] + day*speeds[i]) < 100) {
-                day++;
-            }
-            dayOfEnd[day]++;
+    public List<Integer> solution(int[] progresses, int[] speeds) {
+        List<Integer> answer = new ArrayList<>();
+        Deque<Integer> dq = new ArrayDeque<>();
+        int total = progresses.length;
+        for (int i =0; i < total; i++) {
+            int tmp = 100 - progresses[i];
+            int cal = tmp/speeds[i];
+            if (tmp % speeds[i] != 0) cal++;
+            
+            dq.offer(cal);
         }
-        return Arrays.stream(dayOfEnd).filter(i -> i!=0).toArray();
+        
+        for (int i = 0; i < total; i++) {
+            int poll = dq.poll(); 
+            int count = 1;
+            while(!dq.isEmpty() && dq.peek() <= poll ) {
+                count++; i++;
+                dq.poll();
+            }
+            answer.add(count);
+        }
+        return answer;
     }
 }
