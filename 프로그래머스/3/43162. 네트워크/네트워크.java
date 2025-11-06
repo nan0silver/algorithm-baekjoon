@@ -8,7 +8,8 @@ class Solution {
         
         for (int k = 0; k < n; k++ ){
             if (!visited[k]) {
-                bfs(n, k, computers);
+                //bfs(n, k, computers);
+                dfs(n, k, computers);
                 answer++;
             }
         }
@@ -29,6 +30,14 @@ class Solution {
                 }
             }
         }
-        
+    }
+    
+    public void dfs(int n, int start, int[][] computers) {
+        visited[start] = true;
+        for (int i = 0; i < n; i++) {
+            if (computers[start][i] == 1 && i != start && !visited[i]) {
+                dfs(n, i, computers);
+            }
+        }
     }
 }
