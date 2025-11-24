@@ -9,33 +9,27 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
         int M = Integer.parseInt(br.readLine());
         arrays = new char[M];
-        String S = br.readLine();
-
-        int i = 0;
-        for (char s : S.toCharArray()) {
-            arrays[i++] = s;
-        }
+        arrays = br.readLine().toCharArray();
 
         int answer = 0;
-        for (int j = 0; j < M-N*2; j++) {
-            if (arrays[j] == 'I' && checkP(N, j)) answer++;
+        int count = 0;
+        int i = 1;
+
+        while (i < M-1) {
+            if (arrays[i-1] == 'I' && arrays[i] == 'O' && arrays[i+1] == 'I') {
+                count++;
+                if (count == N) {
+                    answer++;;
+                    count--;
+                }
+                i+=2;
+            } else {
+                count = 0;
+                i++;
+            }
         }
 
         System.out.println(answer);
 
-    }
-    static boolean checkP (int n, int idx) {
-        boolean flag = true;
-        for (int i = 0; i <= n*2; i++) {
-            if (flag && arrays[idx+i] == 'I') {
-                flag = false;
-            }
-            else if (!flag && arrays[idx+i] == 'O') {
-                flag = true;
-            } else {
-                return false;
-            }
-        }
-        return true;
     }
 }
