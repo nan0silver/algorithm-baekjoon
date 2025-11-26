@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class Main {
     static int[] dx = {-1, 1, 0, 0};
@@ -19,21 +17,10 @@ public class Main {
 
         for (int i = 0; i < N; i++) {
             boolean[] visited = new boolean[N];
-            Queue<Integer> q = new LinkedList<>();
-            q.add(i);
+            dfs(i, visited, arrays, N);
 
-            while (!q.isEmpty()) {
-                int cur = q.poll();
-                for (int j = 0; j < N; j++) {
-                    if (arrays[cur][j].equals("1") && !visited[j]) {
-                        visited[j] = true;
-                        q.add(j);
-                    }
-                }
-            }
-
-            for (int k = 0; k < N; k++) {
-                if (visited[k]) answer[i][k] = 1;
+            for (int j = 0; j < N; j++) {
+                if (visited[j]) answer[i][j] = 1;
             }
         }
 
@@ -45,5 +32,14 @@ public class Main {
         }
 
 
+    }
+    static void dfs(int cur, boolean[] visited, String[][] arrrays, int N) {
+
+        for (int t = 0; t < N; t++) {
+            if (arrrays[cur][t].equals("1") && !visited[t]) {
+                visited[t] = true;
+                dfs(t, visited, arrrays, N);
+            }
+        }
     }
 }
