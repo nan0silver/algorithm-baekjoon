@@ -2,12 +2,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Main {
     static List<int[]>[] graph;
-    static int n, maxDist = -1, farNode=1;
+    static int n, answer=0;
     static boolean[] visited;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -30,30 +29,34 @@ public class Main {
 
         visited = new boolean[n+1];
 
-        dfs(1, 0);
-        Arrays.fill(visited, false);
-        dfs(farNode, 0);
-        System.out.println(maxDist);
+        dfs(1);
+        System.out.println(answer);
         
     }
 
-    static void dfs(int cur, int dist) {
-        visited[cur] = true;
+    static int dfs(int u) {
+        int top1=0, top2=0;
+        visited[u] = true;
 
-        if (dist >= maxDist) {
-            maxDist = dist;
-            farNode = cur;
-        }
-
-        for (int[] next : graph[cur]) {
-            int to = next[0];
+        for (int[] next : graph[u]) {
+            int v = next[0];
             int w = next[1];
+            if (visited[v]) continue;
 
-            if (!visited[to]){
-                dfs(to, dist+w);
+            int cand = dfs(v) + w;
+
+            if (cand > top1) {
+                top2 = top1;
+                top1 = cand;
+            } else if (cand > top2) {
+                top2 = cand;
             }
         }
+
+        answer = Math.max(answer, top1+top2);
+        return top1;
     }
+
 
 
 }
